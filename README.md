@@ -1,36 +1,75 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BookSnuggle Web
+
+## Prerequisites
+
+- Node.js (Latest LTS version recommended)
+- Yarn or npm package manager
+
+## Dependencies
+
+This project uses the following main dependencies:
+- Next.js 14.2
+- React 18.2
+- NextAuth.js 4.22
+- TailwindCSS 3.4
 
 ## Getting Started
 
-First, run the development server:
+1. **Clone the repository**
+   ```bash
+   git clone [your-repository-url]
+   cd booksnuggle-web
+   ```
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+2. **Install dependencies**
+   ```bash
+   yarn install
+   # or
+   npm install
+   ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+3. **Environment Setup**
+   - Create a `.env.local` file in the root directory
+   - Add necessary environment variables (contact team for required values)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+4. **Running the Development Server**
+   ```bash
+   yarn dev
+   # or
+   npm run dev
+   ```
+   Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+5. **Other Available Commands**
+   ```bash
+   # Build for production
+   yarn build
+   
+   # Start production server
+   yarn start
+   
+   # Run linting
+   yarn lint
+   ```
 
-## Learn More
+## Development Tools
 
-To learn more about Next.js, take a look at the following resources:
+The project includes several development dependencies:
+- TypeScript for type safety
+- ESLint for code linting
+- PostCSS for CSS processing
+- TailwindCSS for styling
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Notes
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- The project uses Next.js with TypeScript configuration
+- Authentication is handled through NextAuth.js
+- Styling is managed with TailwindCSS
+- Environment variables should never be committed to the repository
 
-## Deploy on Vercel
+## Contributing
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. Make sure to install dependencies using yarn/npm
+2. Create a new branch for your feature
+3. Follow the existing code style and TypeScript conventions
+4. Submit a pull request
