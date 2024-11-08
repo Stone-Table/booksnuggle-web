@@ -1,13 +1,8 @@
-// import MyBooks from '../mybooks'; // Adjusted path to point to the correct location
-
-// export default function MyBooksPage() {
-//   return <MyBooks />;
-// }
-
 'use client';
 
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
+import { Storage } from '@google-cloud/storage';
 
 export default function MyBooks() {
   const router = useRouter();
@@ -18,19 +13,74 @@ export default function MyBooks() {
   const [showMessage, setShowMessage] = useState(false);
   const [uploadMode, setUploadMode] = useState<'pdf' | 'request' | null>(null);
   const [pdfFile, setPdfFile] = useState<File | null>(null);
+  const [uploadError, setUploadError] = useState<string | null>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const uploadToGCS = async (file: File) => {
+    try {
+      if (!file) {
+        throw new Error('No file selected');
+      }
+
+      const formData = new FormData();
+      // Match the field name expected by the API
+      formData.append('file', file);
+      formData.append('filename', file.name);
+      formData.append('bucket', 'booksnuggle');
+      formData.append('serviceAccount', 'terraform-cdk');
+      formData.append('key', '9ec7f287f9cb4517f4b63c1c0ee8cbbc51d79bc3');
+
+      const response = await fetch('/api/upload', {
+        method: 'POST',
+        body: formData,
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.error || `Upload failed with status ${response.status}`);
+      }
+
+      return await response.json();
+    } catch (error) {
+      console.error('Error uploading file:', error);
+      throw error;
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setShowMessage(true);
-    setTimeout(() => {
-      setShowMessage(false);
-      setIsPopupOpen(false);
-      setBookTitle('');
-      setAuthor('');
-      setReadingPartner('');
-      setPdfFile(null);
-      setUploadMode(null);
-    }, 3000);
+    setUploadError(null);
+    
+    try {
+      if (uploadMode === 'pdf') {
+        if (!pdfFile) {
+          setUploadError('Please select a PDF file');
+          return;
+        }
+
+        try {
+          await uploadToGCS(pdfFile);
+        } catch (error) {
+          const errorMessage = error instanceof Error ? error.message : 'Failed to upload PDF. Please try again later.';
+          setUploadError(errorMessage);
+          return;
+        }
+      }
+      
+      setShowMessage(true);
+      setTimeout(() => {
+        setShowMessage(false);
+        setIsPopupOpen(false);
+        setBookTitle('');
+        setAuthor('');
+        setReadingPartner('');
+        setPdfFile(null);
+        setUploadMode(null);
+        setUploadError(null);
+      }, 3000);
+    } catch (error) {
+      console.error('Error in form submission:', error);
+      setUploadError('Something went wrong. Please try again.');
+    }
   };
 
   const handleBookClick = () => {
@@ -110,6 +160,12 @@ export default function MyBooks() {
           <div className="bg-[#111111] p-6 rounded-lg w-full max-w-md">
             <h2 className="text-white text-xl mb-4">Add New Book</h2>
             
+            {uploadError && (
+              <div className="mb-4 p-3 bg-red-500/20 border border-red-500 rounded text-red-500">
+                {uploadError}
+              </div>
+            )}
+            
             {!uploadMode ? (
               <div className="space-y-4">
                 <button
@@ -134,7 +190,7 @@ export default function MyBooks() {
                 </div>
               </div>
             ) : (
-              <form onSubmit={handleSubmit} className="space-y-4">
+              <form onSubmit={handleSubmit} className="space-y-4" encType="multipart/form-data">
                 <div>
                   <label className="text-gray-400 block mb-1">Book Title</label>
                   <input
@@ -161,6 +217,7 @@ export default function MyBooks() {
                     <label className="text-gray-400 block mb-1">Upload PDF</label>
                     <input
                       type="file"
+                      name="file"
                       accept=".pdf"
                       onChange={(e) => setPdfFile(e.target.files?.[0] || null)}
                       className="w-full bg-[#1a1a1a] text-white p-2 rounded border border-[#333333]"
@@ -189,6 +246,7 @@ export default function MyBooks() {
                       setAuthor('');
                       setReadingPartner('');
                       setPdfFile(null);
+                      setUploadError(null);
                     }}
                     className="px-4 py-2 text-gray-400 hover:text-white"
                   >
