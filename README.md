@@ -1,5 +1,9 @@
 # BookSnuggle Web
 
+## Demo
+
+https://github.com/yourusername/booksnuggle-web/assets/demo.gif
+
 ## Prerequisites
 
 - Node.js (Latest LTS version recommended)
