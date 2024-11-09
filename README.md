@@ -2,7 +2,7 @@
 
 ## Demo
 
-https://github.com/yourusername/booksnuggle-web/assets/demo.gif
+[![BookSnuggle Demo](https://img.youtube.com/vi/VAQ0hqFr4Lo/0.jpg)](https://www.youtube.com/watch?v=VAQ0hqFr4Lo "BookSnuggle Demo")
 
 ## Prerequisites
 
