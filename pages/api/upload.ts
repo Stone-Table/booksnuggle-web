@@ -5,7 +5,7 @@ import fs from 'fs';
 
 export const config = {
   api: {
-    bodyParser: false, // Disable built-in parser for formidable
+    bodyParser: false,
   },
 };
 
@@ -24,29 +24,28 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       });
     });
 
-    // Type assertion and validation
     const uploadedFile = files.file?.[0];
     if (!uploadedFile) {
       return res.status(400).json({ error: 'No file provided' });
     }
 
-    const { bucket: bucketName, serviceAccount, key } = fields;
-    if (!bucketName || !serviceAccount || !key) {
-      return res.status(400).json({ error: 'Missing required fields' });
+    const { bucket: bucketName } = fields;
+    if (!bucketName) {
+      return res.status(400).json({ error: 'Missing bucket name' });
     }
 
-    // Validate service account key
-    if (key[0] !== process.env.SERVICE_ROLE_KEY) {
-      return res.status(401).json({ error: 'Invalid service account key' });
-    }
-
+    // Initialize storage with credentials
     const storage = new Storage({
-      projectId: process.env.GCP_PROJECT_ID,
-      keyFilename: process.env.GCP_KEY_FILE_PATH,
+      projectId: process.env.GOOGLE_CLOUD_PROJECT_ID,
+      credentials: {
+        client_email: process.env.GOOGLE_CLOUD_CLIENT_EMAIL,
+        private_key: process.env.GOOGLE_CLOUD_PRIVATE_KEY?.replace(/\\n/g, '\n')
+      }
     });
 
     const bucket = storage.bucket(bucketName[0]);
     const blob = bucket.file(uploadedFile.originalFilename || 'unnamed');
+    
     const blobStream = blob.createWriteStream({
       resumable: false,
       metadata: {
@@ -54,7 +53,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
       }
     });
 
-    // Create read stream from temp file
     const fileStream = fs.createReadStream(uploadedFile.filepath);
 
     await new Promise((resolve, reject) => {
@@ -63,7 +61,6 @@ export default async function handler(req: NextApiRequest, res: NextApiResponse)
         .on('finish', resolve);
     });
 
-    // Clean up temp file
     await fs.promises.unlink(uploadedFile.filepath);
 
     return res.status(200).json({ 

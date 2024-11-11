@@ -8,11 +8,6 @@ export const authOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      authorization: {
-        params: {
-          scope: "openid profile email",
-        },
-      },
     }),
     GithubProvider({
       clientId: process.env.GITHUB_ID,
@@ -36,6 +31,10 @@ export const authOptions = {
       }
     }),
   ],
+  pages: {
+    signIn: '/login',
+    error: '/login',
+  },
   callbacks: {
     async session({ session, token }) {
       return session;
@@ -44,13 +43,11 @@ export const authOptions = {
       return token;
     },
     async redirect({ url, baseUrl }) {
-      // Always redirect to /mybooks after sign in
       return '/mybooks';
     },
   },
-  debug: true,  // Keep debug mode on for detailed logging
+  debug: process.env.NODE_ENV === 'development',
 };
 
-// export const { GET, POST } = NextAuth(authOptions);
 const handler = NextAuth(authOptions);
 export { handler as GET, handler as POST };
