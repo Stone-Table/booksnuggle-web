@@ -68,7 +68,7 @@ jobs:
       - name: Install dependencies
         run: |
           ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-          npm install @google-cloud/storage formidable --legacy-peer-deps
+          npm install @google-cloud/storage formidable @types/formidable --legacy-peer-deps
       - name: Build with Next.js
         env:
           GITHUB_PAGES: true
