@@ -5,6 +5,13 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  webpack: (config) => {
+    config.resolve.fallback = {
+      "@google-cloud/storage": false,
+      "formidable": false
+    };
+    return config;
+  }
 };
 
 module.exports = nextConfig;
