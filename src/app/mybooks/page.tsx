@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import ProtectedRoute from '@/components/ProtectedRoute';
+import Image from 'next/image';
 
 export default function MyBooks() {
   const router = useRouter();
@@ -97,13 +98,15 @@ export default function MyBooks() {
             onClick={handleBookClick}
             className="group relative aspect-[2/3] rounded bg-[#111111] hover:ring-2 hover:ring-purple-500 transition-all hover:-translate-y-1 hover:shadow-lg duration-300 cursor-pointer"
           >
-            <img
+            <Image
               src="https://m.media-amazon.com/images/I/81m1s4wIPML._AC_UF1000,1000_QL80_.jpg"
               alt="Harry Potter Book Cover"
               className="w-full h-full object-cover rounded"
+              width={300}
+              height={450}
             />
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 rounded-b">
-              <h2 className="text-white text-sm font-medium">Harry Potter and the Philosopher's Stone</h2>
+              <h2 className="text-white text-sm font-medium">Harry Potter and the Philosopher&apos;s Stone</h2>
               <p className="text-gray-400 text-xs">J.K. Rowling</p>
             </div>
           </div>
@@ -113,10 +116,12 @@ export default function MyBooks() {
             onClick={handleBookClick}
             className="group relative aspect-[2/3] rounded bg-[#111111] hover:ring-2 hover:ring-purple-500 transition-all hover:-translate-y-1 hover:shadow-lg duration-300 cursor-pointer"
           >
-            <img
+            <Image
               src="https://m.media-amazon.com/images/I/71uAI28kJuL._AC_UF1000,1000_QL80_.jpg"
               alt="Zero to One Book Cover"
               className="w-full h-full object-cover rounded"
+              width={300}
+              height={450}
             />
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 rounded-b">
               <h2 className="text-white text-sm font-medium">Zero to One</h2>
@@ -129,10 +134,12 @@ export default function MyBooks() {
             onClick={handleBookClick}
             className="group relative aspect-[2/3] rounded bg-[#111111] hover:ring-2 hover:ring-purple-500 transition-all hover:-translate-y-1 hover:shadow-lg duration-300 cursor-pointer"
           >
-            <img
+            <Image
               src="https://m.media-amazon.com/images/I/71QcX1PUTRL._AC_UF1000,1000_QL80_.jpg"
               alt="Darkly Dreaming Dexter Book Cover"
               className="w-full h-full object-cover rounded"
+              width={300}
+              height={450}
             />
             <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4 rounded-b">
               <h2 className="text-white text-sm font-medium">Darkly Dreaming Dexter</h2>
