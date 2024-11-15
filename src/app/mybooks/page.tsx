@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Image from 'next/image';
-import { uploadFile } from '@/lib/upload-static';
 
 export default function MyBooks() {
   const router = useRouter();
@@ -21,6 +20,11 @@ export default function MyBooks() {
     try {
       if (!file) {
         throw new Error('No file selected');
+      }
+
+      // Check if we're in a static build
+      if (process.env.NEXT_PUBLIC_GITHUB_PAGES === 'true') {
+        throw new Error('File uploads are not available in static mode');
       }
 
       const formData = new FormData();
@@ -50,6 +54,22 @@ export default function MyBooks() {
     
     try {
       if (uploadMode === 'pdf' && pdfFile) {
+        // In static mode, show a message instead of attempting upload
+        if (process.env.NEXT_PUBLIC_GITHUB_PAGES === 'true') {
+          setShowMessage(true);
+          setTimeout(() => {
+            setShowMessage(false);
+            setIsPopupOpen(false);
+            setBookTitle('');
+            setAuthor('');
+            setReadingPartner('');
+            setPdfFile(null);
+            setUploadMode(null);
+            setUploadError(null);
+          }, 3000);
+          return;
+        }
+
         try {
           const uploadResult = await uploadToGCS(pdfFile);
           console.log('Upload successful:', uploadResult);
@@ -80,7 +100,6 @@ export default function MyBooks() {
       setUploadError('Something went wrong. Please try again.');
     }
   };
-
   const handleBookClick = () => {
     router.push('/playbook');
   };
