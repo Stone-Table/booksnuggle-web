@@ -1,6 +1,7 @@
 import { IncomingForm, Fields, Files } from 'formidable';
 import { Storage } from '@google-cloud/storage';
 import type { NextApiRequest, NextApiResponse } from 'next';
+import * as fs from 'fs';
 
 // Disable body parsing for file uploads
 export const config = {
