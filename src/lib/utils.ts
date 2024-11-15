@@ -4,7 +4,7 @@ export const getBaseUrl = () => {
   }
   
   if (process.env.GITHUB_PAGES === 'true') {
-    return 'https://stone-table.github.io/booksnuggle-web';
+    return 'https://stone-table.github.io';
   }
   
   return process.env.NEXTAUTH_URL || 'http://localhost:3000';
