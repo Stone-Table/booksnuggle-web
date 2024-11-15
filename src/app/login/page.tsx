@@ -2,6 +2,7 @@
 
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import { createStaticUrl } from '@/lib/navigation';
 
 export default function Login() {
   const router = useRouter();
@@ -9,10 +10,10 @@ export default function Login() {
 
   const handleLogin = async (provider?: string) => {
     if (isStatic) {
-      router.push('/mybooks');
+      router.push(createStaticUrl('/mybooks'));
     } else {
       await signIn(provider || 'credentials', {
-        callbackUrl: '/mybooks'
+        callbackUrl: createStaticUrl('/mybooks')
       });
     }
   };
@@ -49,7 +50,7 @@ export default function Login() {
           </button>
 
           <button
-            onClick={() => signIn('github', { callbackUrl: '/mybooks' })}
+            onClick={() => signIn('github', { callbackUrl: createStaticUrl('/mybooks') })}
             className="flex items-center justify-center gap-2 bg-[#24292e] text-white py-2 px-4 rounded hover:bg-[#2f363d] transition-colors"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -75,7 +76,7 @@ export default function Login() {
             signIn('credentials', {
               username: e.currentTarget.username.value,
               password: e.currentTarget.password.value,
-              callbackUrl: '/mybooks'
+              callbackUrl: createStaticUrl('/mybooks')
             });
           }}>
             <input 
