@@ -1,17 +1,17 @@
-import NextAuth from "next-auth";
+import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
 
-export const authOptions = {
+export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
     }),
     GithubProvider({
-      clientId: process.env.GITHUB_ID,
-      clientSecret: process.env.GITHUB_SECRET,
+      clientId: process.env.GITHUB_ID ?? "",
+      clientSecret: process.env.GITHUB_SECRET ?? "",
     }),
     CredentialsProvider({
       name: 'Credentials',
@@ -20,7 +20,7 @@ export const authOptions = {
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials) {
-        if (credentials.username === "admin" && credentials.password === "admin") {
+        if (credentials?.username === "admin" && credentials?.password === "admin") {
           return {
             id: "1",
             name: "Guest Admin",
@@ -36,18 +36,8 @@ export const authOptions = {
     error: '/login',
   },
   callbacks: {
-    async session({ session, token }) {
-      return session;
-    },
-    async jwt({ token, account }) {
-      return token;
-    },
     async redirect({ url, baseUrl }) {
       return '/mybooks';
     },
   },
-  debug: process.env.NODE_ENV === 'development',
 };
-
-const handler = NextAuth(authOptions);
-export { handler as GET, handler as POST };
