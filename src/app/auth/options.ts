@@ -1,17 +1,17 @@
-import { NextAuthOptions } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
+import type { NextAuthOptions } from 'next-auth';
 
 export const authOptions: NextAuthOptions = {
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID ?? "",
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET ?? "",
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
     }),
     GithubProvider({
-      clientId: process.env.GITHUB_ID ?? "",
-      clientSecret: process.env.GITHUB_SECRET ?? "",
+      clientId: process.env.GITHUB_ID!,
+      clientSecret: process.env.GITHUB_SECRET!,
     }),
     CredentialsProvider({
       name: 'Credentials',
@@ -36,8 +36,19 @@ export const authOptions: NextAuthOptions = {
     error: '/login',
   },
   callbacks: {
+    async session({ session }) {
+      return session;
+    },
+    async jwt({ token }) {
+      return token;
+    },
     async redirect({ url, baseUrl }) {
       return '/mybooks';
-    },
+    }
   },
-};
+  session: {
+    strategy: "jwt",
+    maxAge: 24 * 60 * 60 // 24 hours
+  },
+  secret: process.env.NEXTAUTH_SECRET || "your-development-secret-key"
+}; 

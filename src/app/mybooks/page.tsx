@@ -17,6 +17,13 @@ export default function MyBooks() {
   const [uploadError, setUploadError] = useState<string | null>(null);
 
   const uploadToGCS = async (file: File) => {
+    if (process.env.GITHUB_PAGES === 'true') {
+      return {
+        success: false,
+        message: 'File upload is not available in the static version.'
+      };
+    }
+
     try {
       if (!file) {
         throw new Error('No file selected');

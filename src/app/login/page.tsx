@@ -1,8 +1,22 @@
 'use client';
 
 import { signIn } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
-export default function Home() {
+export default function Login() {
+  const router = useRouter();
+  const isStatic = process.env.GITHUB_PAGES === 'true';
+
+  const handleLogin = async (provider?: string) => {
+    if (isStatic) {
+      router.push('/mybooks');
+    } else {
+      await signIn(provider || 'credentials', {
+        callbackUrl: '/mybooks'
+      });
+    }
+  };
+
   return (
     <main className="h-screen w-screen flex items-center justify-center bg-[#0a0a0a]">
       <div className="w-[360px] bg-[#111111] p-6 rounded">
@@ -10,7 +24,7 @@ export default function Home() {
         <p className="text-gray-400 text-sm mb-6">Please sign in to continue.</p>
         <div className="flex flex-col gap-4">
           <button
-            onClick={() => signIn('google', { callbackUrl: '/mybooks' })}
+            onClick={() => handleLogin('google')}
             className="flex items-center justify-center gap-2 bg-white text-gray-800 py-2 px-4 rounded hover:bg-gray-100 transition-colors"
           >
             <svg className="w-5 h-5" viewBox="0 0 24 24">

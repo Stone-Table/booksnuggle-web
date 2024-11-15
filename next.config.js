@@ -6,16 +6,10 @@ const nextConfig = {
   },
   ...(process.env.GITHUB_PAGES === 'true' ? {
     output: 'export',
+    basePath: '/booksnuggle-web',
     images: {
       unoptimized: true,
-    },
-    webpack: (config, { isServer }) => {
-      if (process.env.GITHUB_PAGES === 'true') {
-        config.resolve.alias['@google-cloud/storage'] = false;
-        config.resolve.alias['formidable'] = false;
-      }
-      return config;
-    },
+    }
   } : {}),
 };
 

@@ -3,6 +3,10 @@ import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
 export async function middleware(request: NextRequest) {
+  if (process.env.GITHUB_PAGES === 'true') {
+    return NextResponse.next();
+  }
+
   const token = await getToken({ req: request });
   const isAuthPage = request.nextUrl.pathname.startsWith('/login');
 
