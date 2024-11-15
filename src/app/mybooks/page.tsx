@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from 'next/navigation';
 import ProtectedRoute from '@/components/ProtectedRoute';
 import Image from 'next/image';
+import { uploadFile } from '@/lib/upload-static';
 
 export default function MyBooks() {
   const router = useRouter();

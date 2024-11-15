@@ -1,7 +1,4 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { Storage } from '@google-cloud/storage';
-import formidable from 'formidable';
-import fs from 'fs';
 
 export const config = {
   api: {
@@ -10,13 +7,25 @@ export const config = {
 };
 
 export default async function handler(req: NextApiRequest, res: NextApiResponse) {
+  // For static exports, API routes are not supported
+  if (process.env.NEXT_PHASE === 'phase-production-build') {
+    return res.status(404).json({
+      error: 'API routes are not supported in static exports'
+    });
+  }
+
   if (req.method !== 'POST') {
     res.setHeader('Allow', ['POST']);
     return res.status(405).end(`Method ${req.method} Not Allowed`);
   }
 
+  // Dynamically import dependencies only when needed (not during static build)
+  const { Storage } = await import('@google-cloud/storage');
+  const formidable = await import('formidable');
+  const fs = await import('fs');
+
   try {
-    const form = formidable();
+    const form = formidable.default();
     const [fields, files] = await new Promise<[formidable.Fields, formidable.Files]>((resolve, reject) => {
       form.parse(req, (err, fields, files) => {
         if (err) reject(err);
