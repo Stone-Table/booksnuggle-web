@@ -4,7 +4,7 @@ export const getBaseUrl = () => {
   }
   
   if (process.env.GITHUB_PAGES === 'true') {
-    return 'https://stone-table.github.io';
+    return 'https://booksnuggle.netlify.app';
   }
   
   return process.env.NEXTAUTH_URL || 'http://localhost:3000';
