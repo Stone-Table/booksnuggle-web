@@ -1,7 +1,8 @@
-import type { NextAuthOptions } from 'next-auth';
-import { authOptions } from './options';
-import { staticAuthConfig } from './static-auth';
+import type { AuthOptions } from 'next-auth'
 
-export const getAuthConfig = (): NextAuthOptions => {
-  return process.env.GITHUB_PAGES === 'true' ? staticAuthConfig : authOptions;
-}; 
+export function getAuthConfig(): AuthOptions {
+  return {
+    // Add your auth providers and configuration here
+    providers: [],
+  }
+} 

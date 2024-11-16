@@ -17,7 +17,6 @@ export default function Login() {
       });
     }
   };
-
   return (
     <main className="h-screen w-screen flex items-center justify-center bg-[#0a0a0a]">
       <div className="w-[360px] bg-[#111111] p-6 rounded">
@@ -103,3 +102,4 @@ export default function Login() {
     </main>
   );
 }
+
