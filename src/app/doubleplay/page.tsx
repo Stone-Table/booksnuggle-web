@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import ProtectedRoute from '@/components/ProtectedRoute';
+// import ProtectedRoute from '@/components/ProtectedRoute';
 
 export default function DoublePage() {
   const [videoUrl1, setVideoUrl1] = useState('');
@@ -44,7 +44,7 @@ export default function DoublePage() {
   }, []);
 
   return (
-    <ProtectedRoute>
+    // <ProtectedRoute>
       <main className="h-screen w-screen flex flex-col bg-[#0a0a0a] p-6">
         <header className="mb-8">
           <h1 className="text-white text-xl mb-4">Double Play</h1>
@@ -166,6 +166,6 @@ export default function DoublePage() {
           </div>
         )}
       </main>
-    </ProtectedRoute>
+    // </ProtectedRoute>
   );
 }
