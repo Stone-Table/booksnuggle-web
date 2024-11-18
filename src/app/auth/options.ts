@@ -2,6 +2,7 @@ import type { AuthOptions } from 'next-auth';
 import GoogleProvider from "next-auth/providers/google";
 import GithubProvider from "next-auth/providers/github";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { getBaseUrl } from '@/lib/utils';
 
 export const authOptions: AuthOptions = {
   providers: [
@@ -43,7 +44,12 @@ export const authOptions: AuthOptions = {
       return token;
     },
     async redirect({ url, baseUrl }) {
-      return '/mybooks';
+      // Use the dynamic base URL for Netlify
+      const base = getBaseUrl();
+      if (url.startsWith(base)) {
+        return url;
+      }
+      return `${base}/mybooks`;
     }
   },
   session: {
