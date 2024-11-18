@@ -7,7 +7,7 @@ export const getBaseUrl = () => {
     return 'https://booksnuggle.netlify.app';
   }
   
-  return process.env.NEXTAUTH_URL || 'http://localhost:3000';
+  return process.env.NEXTAUTH_URL || 'http://localhost:3001';
 };
 
 export const getBasePath = () => {

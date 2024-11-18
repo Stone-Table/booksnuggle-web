@@ -42,7 +42,7 @@ This project uses the following main dependencies:
    # or
    npm run dev
    ```
-   Open [http://localhost:3000](http://localhost:3000) in your browser to see the result.
+   Open [http://localhost:3001](http://localhost:3001) in your browser to see the result.
 
 5. **Other Available Commands**
    ```bash
