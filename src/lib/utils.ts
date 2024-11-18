@@ -3,7 +3,7 @@ export const getBaseUrl = () => {
     return window.location.origin;
   }
   
-  if (process.env.GITHUB_PAGES === 'true') {
+  if (process.env.NETLIFY === 'true') {
     return 'https://booksnuggle.netlify.app';
   }
   
