@@ -44,3 +44,6 @@ next-env.d.ts
 
 # gif files
 *.gif
+
+# Local Netlify folder
+.netlify
